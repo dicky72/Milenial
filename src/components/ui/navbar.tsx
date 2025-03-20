@@ -1,25 +1,34 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { ShoppingBag, Menu, Search } from "lucide-react"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { ShoppingBag, Menu, Search, X } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
 
 export default function Navbar() {
-  const pathname = usePathname()
-  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname();
+  const router = useRouter();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const products = ["T-Shirt", "Pants", "Hoodie", "Shoes"];
+const filteredProducts = products.filter((product) =>
+  product.toLowerCase().includes(searchQuery.toLowerCase())
+);
+
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
+      setIsScrolled(window.scrollY > 10);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { name: "Beranda", href: "/" },
@@ -27,9 +36,16 @@ export default function Navbar() {
     { name: "Pants", href: "/pants" },
     { name: "Hoodie", href: "/hoodie" },
     { name: "Shoes", href: "/shoes" },
-  ]
+  ];
 
-  const isActive = (path: string) => pathname === path
+  const isActive = (path: string) => pathname === path;
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim() !== "") {
+      router.push(`/search?query=${searchQuery}`);
+    }
+  };
 
   return (
     <header
@@ -95,7 +111,64 @@ export default function Navbar() {
             </Link>
           ))}
         </nav>
+
+        {/* Search */}
+       {/* Search */}
+{/* Search */}
+<div className="flex items-center gap-4 relative">
+  {isSearchOpen ? (
+    <div className="relative">
+      <form onSubmit={handleSearch} className="flex items-center gap-2">
+        <Input
+          type="text"
+          placeholder="Cari produk..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-40 md:w-60 transition-all"
+          autoFocus
+        />
+        <Button type="submit" variant="outline">
+          Cari
+        </Button>
+        <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
+          <X className="h-5 w-5" />
+          <span className="sr-only">Tutup</span>
+        </Button>
+      </form>
+
+      {/* Dropdown hasil pencarian */}
+      {searchQuery && (
+        <div className="absolute left-0 mt-2 w-full bg-white shadow-lg border rounded-md p-2 z-50">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product, index) => (
+              <div
+                key={index}
+                className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  setSearchQuery(product);
+                  setIsSearchOpen(false);
+                  router.push(`/${product.toLowerCase()}`);
+                }}
+              >
+                {product}
+              </div>
+            ))
+          ) : (
+            <div className="px-3 py-2 text-gray-500">Produk tidak ditemukan</div>
+          )}
+        </div>
+      )}
+    </div>
+  ) : (
+    <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
+      <Search className="h-5 w-5" />
+      <span className="sr-only">Cari</span>
+    </Button>
+  )}
+</div>
+
+
       </div>
     </header>
-  )
+  );
 }
