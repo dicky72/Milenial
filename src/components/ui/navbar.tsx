@@ -95,14 +95,6 @@ export default function Navbar() {
             </Link>
           ))}
         </nav>
-
-        {/* Icon Search */}
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon">
-            <Search className="h-5 w-5" />
-            <span className="sr-only">Cari</span>
-          </Button>
-        </div>
       </div>
     </header>
   )

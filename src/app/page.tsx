@@ -32,10 +32,12 @@ export default function Home() {
                 Ekspresikan dirimu dengan koleksi outfit keren kami yang dirancang untuk gaya hidup milenial.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg">
-                  Belanja Sekarang
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+              <a href="https://collshp.com/outfitmilenial_" target="_blank" rel="noopener noreferrer">
+  <Button size="lg">
+    Belanja Sekarang
+    <ArrowRight className="ml-2 h-4 w-4" />
+  </Button>
+</a>
               </div>
             </div>
             <div className="relative">
