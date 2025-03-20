@@ -112,13 +112,14 @@ const filteredProducts = products.filter((product) =>
           ))}
         </nav>
 
-        {/* Search */}
-       {/* Search */}
-{/* Search */}
+     {/* Search */}
 <div className="flex items-center gap-4 relative">
   {isSearchOpen ? (
     <div className="relative">
-      <form onSubmit={handleSearch} className="flex items-center gap-2">
+      <form
+        onSubmit={handleSearch}
+        className="flex items-center gap-2"
+      >
         <Input
           type="text"
           placeholder="Cari produk..."
@@ -126,10 +127,12 @@ const filteredProducts = products.filter((product) =>
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-40 md:w-60 transition-all"
           autoFocus
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch(e);
+            }
+          }}
         />
-        <Button type="submit" variant="outline">
-          Cari
-        </Button>
         <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
           <X className="h-5 w-5" />
           <span className="sr-only">Tutup</span>
@@ -166,6 +169,7 @@ const filteredProducts = products.filter((product) =>
     </Button>
   )}
 </div>
+
 
 
       </div>
